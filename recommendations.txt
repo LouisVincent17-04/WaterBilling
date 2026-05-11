@@ -1,0 +1,210 @@
+
+===============================================================================================================================================
+SUMAMRY OF PAGES
+- Discount Page 
+- Water Rates Page 
+- Bill Code Page 
+- Bill Period Page 
+- Recurring Bill Page 
+- Installment Bill Page 
+- One Time Billing Page 
+- Reading Page (This is where we can see the consumptions)
+
+
+===============================================================================================================================================
+
+- Create a discount page where it is in the table form
+    - Senior Citizen
+    - PWD
+    - Flexible Value 
+
+- Create a page that consist of table for water rates 
+    FROM (cubic meter)        TO (cubic meter)        AMOUNT (Per Cubic)           BILL TYPE
+    0                           4                       100                        FIXED
+    5                           10                      40                         VARIABLE
+
+    NOTE: IF THE CUSTOMER CONSUMED ONLY 0-4 CUBIC METER REGARDLESS OF THE AMOUNT SO LONG AS IT BELONGS TO
+    THE GIVEN RANGE, THE AMOUNT IS 100
+
+    DYNAMIC BILL TYPE IS AMOUNT PER CUBIC x CUBIC METER CONSUMED 
+
+Reading Page format: (Bill is the process of computing the customer's charges)
+
+- Auto flag if the customer is senior citizen base on their birthdates
+
+==============================================================================================================
+- Create a page for Bill Code Table
+Type (Select will only have 5 values [Asset, Liability, Equity, Revenue, Expense])
+
+Description         Type        GL Account (General Ledger) [retrieve from chartofaccntstbl where SummaryAccnt != 0]        DEFAULT AMOUNT 
+Water Bill          Revenue                                                                                                   50
+Share Capital       Equity                                   
+Penalty             Revenue
+Water Meter         Asset
+Membership Fee
+
+
+
+Add     Edit        Delete (If one GL Account is linked, it can't be deleted)
+==============================================================================================================
+
+Account No:
+20439872
+
+Customer Information:
+Name: Juan Tamad
+Address: Cogon Cordova Cebu
+
+
+==============================================================================================================
+
+BILL PERIOD (Create Period, Delete Period, Update Period (if not used)) (Bill Period should have 
+individual or batch options)
+--------------------------------------------------------------------------
+FROM:        |    01/02/2026
+TO:          |    02/02/2026
+CODE:        |    010226_020226
+STATUS:      |    CLOSE/OPEN
+OPENED BY:   |    Glenn
+CLOSED BY:   |    Glenn 
+CLOSED ON:   |    02/04/2026 
+--------------------------------------------------------------------------
+
+==============================================================================================================
+
+(Individual Reading)
+BILL READING
+Account No: 0349587
+Account Name: Juan Tamad
+Address: Cogon Cordova Cebu
+Zone: 3
+Bill Period: 010226_020226
+Prev Reading : 25 m^3   (From Previous Period)
+Pres Reading : 50 m^3
+Consumption : 25 (Present Reading - Previous Reading)
+
+SAVE       EDIT         NEW         CLOSE       
+--------------------------------------------------------------------------
+(Batch Reading)
+
+Batch (Select Street) 
+
+
+Account Number  |   Account Name                            |  Prev.  Reading  |   Pres. Reading   | Consumption (Pres - Prev) | Billed
+-----------------------------------------------------------------------------------------------------------------------------------------
+1234            |   LastName, FirstName MI. (Optional)      |        543       |      570          |    27                     |    ✅
+4321            |   LastName, FirstName MI. (Optional)      |        611       |      615          |    4                      |
+1234            |   LastName, FirstName MI. (Optional)      |        543       |      570          |    27                     |    ✅
+4321            |   LastName, FirstName MI. (Optional)      |        611       |      615          |    4                      |
+
+SAVE    EDIT
+---------------------------------------------------------------------------------------------------------------------------------------------
+NOTE ONLY: If the row is already billed, read-only unless if explicitly edited
+
+
+
+
+ - Create a recurring bill page 
+Filter by Sitio/Barangay/Zone/Individual
+RECURRING BILL:
+FREQUENCY (Select: Monthly, Quarterly, Semi-Annually, Annually)
+
+----------------------------------------------------------------------------------------------------
+ACCOUNT NUMBER      ACCOUNT NAME                        Recurring Bill Amt.     START DATE        STATUS  
+1234                LastName, FirstName MI.                    50               02/02/2026          ✅
+4321                LastName, FirstName MI.                    50               02/02/2026      
+----------------------------------------------------------------------------------------------------
+
+
+----------------------------------------------------------------------------------------------------
+TYPE: (SELECT)          AMOUNT              FREQUENCY           START DATE        STATUS  
+----------------------------------------------------------------------------------------------------
+Share Capital            50                 Monthly             02/02/2026          ✅
+
+=================================================================================================================================================
+ - Create an installment bill page
+Amortization Type (Select: Fixed, Flexible)
+Payment Mode (Select: Monthly, Quarterly, Semi-Annually, Annually)
+
+Conditions: 
+    (
+        if Payment mode is ÷ 1 => Monthly
+        if Payment mode is ÷ 3 => Quarterly
+        if Payment mode is ÷ 6 => Semi-Annually
+        if Payment mode is ÷ 12 => Annually
+    )
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+Description                   Payment Mode            Term (N Months to pay)           Amortization Type
+--------------------------------------------------------------------------------------------------------------------------------------------
+Water Meter                    Monthly                    6                                 Flexible   
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Add installment bill (THIS IS FLEXIBLE)
+
+Name: LastName, FirstName MI.
+Account Number: 1234
+--------------------------------------------------------------------------------------------------------------------------------------------
+Bill Code       Payment Mode        Amount      Term (Months to Payment)        Amortization Type       Amortization Start Date
+Water Meter     Monthly             2850                6                           Flexible              mm/dd/yyyy
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Generate Amortization Schedule: 
+Amortization Schedule           Amount 
+02/02/2026                      450   
+03/02/2026                      400
+04/02/2026                      600
+05/02/2026                      500
+06/02/2026                      400
+07/02/2026                      500
+-----------------------------------------------------------------------------------------------------------------------------------
+Add installment bill (THIS IS FIXED)
+
+Name: LastName, FirstName MI.
+Account Number: 1234
+--------------------------------------------------------------------------------------------------------------------------------------------
+Bill Code       Payment Mode        Amount      Term (Months to Payment)        Amortization Type       Amortization Start Date
+Water Meter     Monthly             2850                6                           Fixed              mm/dd/yyyy
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Generate Amortization Schedule: 
+Amortization Schedule           Amount 
+02/02/2026                      475   
+03/02/2026                      475
+04/02/2026                      475
+05/02/2026                      475
+06/02/2026                      475
+07/02/2026                      475
+
+
+NOTE ONLY: If the user inputs Amortization type as fixed, automatically (amount / term... if the result of the (amount/term) x term is not whole, 
+apply the lacking value in the last month: 
+Example: 3 months to pay, 100 pesos
+1st month: 33.33
+2nd month: 33.33
+3rd month: 33.34
+
+)
+
+            Memorize Water Bill (Button)
+===============================================================================================================================================
+
+- Create a One Time Billing Page
+
+
+Bill Date: 04/30/2026               Dute Date: 05/30/2026               Term(Days): 30
+
+Bill Code:                           Amount 
+Membership Fee                        200
+Reconnection Fee                       50 
+
+
+Save
+
+===============================================================================================================================================
+
+Discounts:
+
+A - RESIDENTIAL AND REGULAR MEMBER 
